@@ -4,25 +4,29 @@ import { Link, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
   AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItem, ListItemIcon,
-  ListItemText, CssBaseline, Box
+  ListItemText, CssBaseline, Box, Divider
 } from '@mui/material';
 import { MdClose, MdPhoneInTalk } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaBloggerB, FaGraduationCap } from "react-icons/fa6";
+import { FaBloggerB, FaGraduationCap, FaUniversity } from "react-icons/fa6";
 import { CgNotes } from "react-icons/cg";
+import { IoIosInformationCircle } from "react-icons/io";
+import { MdOutlineAnnouncement } from "react-icons/md";
+import { PiStudentFill } from "react-icons/pi";
+import { MdVideoLibrary } from "react-icons/md";
 
 const drawerWidth = 240;
 
 const navItems = [
-  { label: 'About', path: '/profile/' },
+  { label: 'About', path: '/profile/', icon: <IoIosInformationCircle /> },
   { label: 'Examinations', path: '/profile/examinations', icon: <FaGraduationCap /> },
-  { label: 'Admissions', path: '/profile/admissions' },
-  { label: 'Placements', path: '/profile/placements' },
-  { label: 'Campus and Events Videos', path: '/profile/campus' },
+  { label: 'Admissions', path: '/profile/admissions', icon: <PiStudentFill /> },
+  { label: 'Placements', path: '/profile/placements', icon: <FaUniversity /> },
+  { label: 'Campus and Events Videos', path: '/profile/campus', icon: <MdVideoLibrary /> },
   { label: 'Blogs', path: '/profile/blogs', icon: <FaBloggerB /> },
   { label: 'Contact Us', path: '/profile/contact_us', icon: <MdPhoneInTalk /> },
   { label: 'Results', path: '/profile/results', icon: <CgNotes /> },
-  { label: 'Notice', path: '/profile/notices' },
+  { label: 'Notice', path: '/profile/notices', icon: <MdOutlineAnnouncement /> },
 ];
 
 function Profile() {
@@ -73,10 +77,11 @@ function Profile() {
           Student Panel
         </Typography>
       </Toolbar>
+      <Divider />
       <List>
         {navItems.map((item, index) => (
           <ListItem button key={index} component={Link} to={item.path} onClick={() => setMobileOpen(false)}>
-            {item.icon && <ListItemIcon>{item.icon}</ListItemIcon>}
+            <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.label} />
           </ListItem>
         ))}
@@ -99,8 +104,8 @@ function Profile() {
               >
                 {mobileOpen ? <MdClose /> : <GiHamburgerMenu />}
               </IconButton>
-              <Typography variant="h6" noWrap component="div">
-                Welcome, {username || 'Student'}
+              <Typography variant="h6" noWrap>
+                Student Dashboard
               </Typography>
             </Toolbar>
           </AppBar>
@@ -138,8 +143,21 @@ function Profile() {
           </Box>
 
           {/* Main Content */}
-          <Box component="main" sx={{ flexGrow: 1, p: 3, bgcolor: '#f4f6f8', minHeight: '100vh' }}>
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: 3,
+              bgcolor: '#f4f6f8',
+              minHeight: '100vh',
+            }}
+          >
             <Toolbar />
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="h5" fontWeight="bold" color="primary">
+                Welcome, {username || 'Student'}!
+              </Typography>
+            </Box>
             <Outlet />
           </Box>
         </Box>
