@@ -1,28 +1,45 @@
-import axios from 'axios';
-import { motion } from 'framer-motion';
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { FaEye, FaEyeSlash, FaCheckCircle } from "react-icons/fa";
 import { IoWarningSharp } from "react-icons/io5";
-import { Link } from 'react-router-dom';
+
+// Material UI imports
+import { 
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  InputAdornment,
+  IconButton,
+  Paper,
+  Alert,
+  AlertTitle
+} from '@mui/material';
 
 const RegistrationForm = () => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
     password: '',
-    type:''
+    type: ''
   });
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
-  const [show, setShow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleShow = () => {
-    setShow(prev => !prev);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -37,27 +54,11 @@ const RegistrationForm = () => {
 
       setTimeout(() => {
         if (response.data === 'user_exist') {
-          setError(
-            <div className="bg-red-100 border-t border-b border-red-500 text-red-700 px-4 py-3" role="alert">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <IoWarningSharp className='text-2xl'/>
-                <span className="font-bold"> Warning</span>
-              </div>
-              <p className="text-sm">Username or email already exists</p>
-            </div>
-          );
+          setError('user_exist');
         } else if (response.data === 'user_saved') {
-          setSuccess(
-            <div className="bg-blue-100 border-t border-b border-blue-500 text-blue-700 px-4 py-3" role="alert">
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <FaCheckCircle className='text-2xl'/>
-                <span className="font-bold"> Registered</span>
-              </div>
-              <p className="text-sm">Registered successfully</p>
-            </div>
-          );
+          setSuccess('user_saved');
         }
-        setFormData({ 'username': '', 'email': '', 'password': '','type':'' });
+        setFormData({ 'username': '', 'email': '', 'password': '', 'type': '' });
         setTimeout(() => {
           setSuccess("");
           setError("");
@@ -65,93 +66,168 @@ const RegistrationForm = () => {
       }, 1000);
     } catch (error) {
       console.error('Error submitting form:', error);
-      // alert('Failed to register. Please try again.');
     }
   };
 
   return (
-    <div
-      className="flex flex-col items-center justify-center min-h-screen bg-gray-100 bg-opacity-30 pt-10 pb-10"
-      style={{
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         backgroundImage: 'url("https://marvel-b1-cdn.bc0a.com/f00000000234031/www.pacificu.edu/sites/default/files/styles/page_banner/public/Pacific%20University%20Banner%20Spring%202024.jpg?itok=Q8qRVKCX")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        backgroundBlendMode: 'overlay'
+        py: 5
       }}
     >
-      <motion.div
-        initial={{ x: -500 }}
-        animate={{ x: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md p-8 space-y-8 bg-blue-100 bg-opacity-90 rounded-lg shadow-md"
-      >
-        <h1 className="sea-waves text-center text-3xl font-bold h-40 pt-4">AcademiaHub University</h1>
-        <h2 className="text-2xl font-bold text-center text-gray-800">Register</h2>
-        {error}
-        {success}
-        <form className="space-y-6" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="select">Select register type</label>
-          <select required name='type' value={formData.type} onChange={handleChange}
-                id="select"
-                className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      <Container maxWidth="sm">
+        <Paper 
+          elevation={8}
+          sx={{
+            p: 4,
+            display: 'flex',
+            flexDirection: 'column',
+            backgroundColor: 'rgba(255, 255, 255, 0.9)'
+          }}
+        >
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            align="center" 
+            gutterBottom
+            sx={{ 
+              fontWeight: 'bold',
+              color: '#1976d2',
+              mb: 2,
+              height: '120px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            AcademiaHub University
+          </Typography>
+          
+          <Typography variant="h5" component="h2" align="center" gutterBottom>
+            Register
+          </Typography>
+          
+          {error === 'user_exist' && (
+            <Alert 
+              severity="error" 
+              icon={<IoWarningSharp />}
+              sx={{ mb: 2 }}
+            >
+              <AlertTitle>Warning</AlertTitle>
+              Username or email already exists
+            </Alert>
+          )}
+          
+          {success === 'user_saved' && (
+            <Alert 
+              severity="success" 
+              icon={<FaCheckCircle />}
+              sx={{ mb: 2 }}
+            >
+              <AlertTitle>Registered</AlertTitle>
+              Registered successfully
+            </Alert>
+          )}
+          
+          <Box component="form" onSubmit={handleSubmit} sx={{ mt: 2 }}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel id="type-label">Select register type</InputLabel>
+              <Select
+                labelId="type-label"
+                id="type"
+                name="type"
+                value={formData.type}
+                onChange={handleChange}
+                label="Select register type"
+                required
               >
-                <option value="">---Select---</option>
-                <option value="student">Student</option>
-                <option value="staff">Staff</option>
-              </select>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
-            <input
-              type="text"
-              name="username"
+                <MenuItem value="">---Select---</MenuItem>
+                <MenuItem value="student">Student</MenuItem>
+                <MenuItem value="staff">Staff</MenuItem>
+              </Select>
+            </FormControl>
+            
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="username"
+              label="Username"
+              name="username"
               value={formData.username}
               onChange={handleChange}
-              className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              required
             />
-          </div>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
-            <input
-              type="email"
-              name="email"
+            
+            <TextField
+              margin="normal"
+              required
+              fullWidth
               id="email"
+              label="Email"
+              name="email"
+              type="email"
               value={formData.email}
               onChange={handleChange}
-              className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-              required
             />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
-            <div className='relative'>
-              <input
-                type={show ? 'text' : 'password'}
-                name="password"
-                id="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-                required
-              />
-              <div className='absolute inset-y-0 right-0 pr-3 flex items-center text-2xl cursor-pointer' onClick={handleShow}>
-                {show ? <FaEyeSlash /> : <FaEye />}
-              </div>
-            </div>
-          </div>
-          <div>
-            <p className='p-3'>Already have an account? <Link className='text-blue-700 underline' to='/login'>Login here</Link></p>
-            <button
+            
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="password"
+              label="Password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              value={formData.password}
+              onChange={handleChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={togglePasswordVisibility}
+                      edge="end"
+                    >
+                      {showPassword ? <FaEyeSlash /> : <FaEye />}
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }}
+            />
+            
+            <Box sx={{ mt: 2, mb: 2 }}>
+              <Typography variant="body2">
+                Already have an account? <Link to="/login" style={{ color: '#1976d2', textDecoration: 'underline' }}>Login here</Link>
+              </Typography>
+            </Box>
+            
+            <Button
               type="submit"
-              className="w-full px-4 py-2 text-white bg-green-600 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              fullWidth
+              variant="contained"
+              color="primary"
+              sx={{ 
+                mt: 2, 
+                mb: 2,
+                py: 1,
+                backgroundColor: '#2e7d32',
+                '&:hover': {
+                  backgroundColor: '#1b5e20'
+                }
+              }}
             >
               Register
-            </button>
-          </div>
-        </form>
-      </motion.div>
-    </div>
+            </Button>
+          </Box>
+        </Paper>
+      </Container>
+    </Box>
   );
 };
 
