@@ -4,21 +4,19 @@ import {
   AppBar, Toolbar, Typography, Box, IconButton,
   Drawer, List, ListItem, ListItemButton, ListItemIcon, ListItemText, CssBaseline
 } from '@mui/material';
-import { MdClose } from "react-icons/md";
+import { MdClose, MdPhoneInTalk, MdOutlineAnnouncement } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { FaBloggerB, FaGraduationCap, FaUniversity, FaBriefcase, FaVideo, FaInfoCircle } from "react-icons/fa6";
+import { PiExamFill } from "react-icons/pi";
+import { BsClipboard2CheckFill } from "react-icons/bs";
 import { Link, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaBloggerB, FaGraduationCap } from "react-icons/fa6";
-import { MdPhoneInTalk } from "react-icons/md";
-import { CgNotes } from "react-icons/cg";
-
 
 const drawerWidth = 240;
 
 function Profile() {
   const [tokenValid, setTokenValid] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const theme = localStorage.getItem('theme');
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -54,15 +52,15 @@ function Profile() {
   }
 
   const navItems = [
-    { text: 'About', path: '/profile/', icon: <CgNotes /> },
-    { text: 'Examinations', path: '/profile/examinations', icon: <FaGraduationCap /> },
-    { text: 'Admissions', path: '/profile/admissions', icon: <CgNotes /> },
-    { text: 'Placements', path: '/profile/placements', icon: <CgNotes /> },
-    { text: 'Campus and events videos', path: '/profile/campus', icon: <CgNotes /> },
+    { text: 'About', path: '/profile/', icon: <FaInfoCircle /> },
+    { text: 'Examinations', path: '/profile/examinations', icon: <PiExamFill /> },
+    { text: 'Admissions', path: '/profile/admissions', icon: <FaUniversity /> },
+    { text: 'Placements', path: '/profile/placements', icon: <FaBriefcase /> },
+    { text: 'Campus and events videos', path: '/profile/campus', icon: <FaVideo /> },
     { text: 'Blogs', path: '/profile/blogs', icon: <FaBloggerB /> },
     { text: 'Contact Us', path: '/profile/contact_us', icon: <MdPhoneInTalk /> },
-    { text: 'Results', path: '/profile/results', icon: <CgNotes /> },
-    { text: 'Notice', path: '/profile/notices', icon: <CgNotes /> },
+    { text: 'Results', path: '/profile/results', icon: <BsClipboard2CheckFill /> },
+    { text: 'Notice', path: '/profile/notices', icon: <MdOutlineAnnouncement /> },
   ];
 
   const drawer = (
