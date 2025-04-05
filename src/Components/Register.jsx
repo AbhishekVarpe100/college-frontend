@@ -98,7 +98,7 @@ const RegistrationForm = () => {
               >
                 <option value="">---Select---</option>
                 <option value="student">Student</option>
-                <option disabled value="staff">Staff</option>
+                <option value="staff">Staff</option>
               </select>
             <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
             <input
