@@ -13,7 +13,7 @@ function UploadPhoto() {
         formData.append('id',id);
         formData.append('type',type);
         formData.append('file',file);
-        const res=await axios.post('http://localhost:3000/upload_photo',formData);
+        const res=await axios.post('https://college-backend-4-cgya.onrender.com/upload_photo',formData);
         if(res.data=='uploaded'){
             navigate('/profile_img')
         }

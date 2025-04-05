@@ -34,7 +34,7 @@ function Examinations() {
   const getPdf = async () => {
     try {
       const response = await axios({
-        url: 'http://localhost:3000/download_hallticket',
+        url: 'https://college-backend-4-cgya.onrender.com/download_hallticket',
         method: 'GET',
         responseType: 'blob', // Important
         params:{username,email}
@@ -60,7 +60,7 @@ function Examinations() {
 
 
   const confirmHallTicket=async()=>{
-    const res=await axios.get('http://localhost:3000/confirm_hallticket',{params:{username,email}})
+    const res=await axios.get('https://college-backend-4-cgya.onrender.com/confirm_hallticket',{params:{username,email}})
    
     if(res.data.pdfurl){
       setHallTicket(res.data.pdfurl)
@@ -70,7 +70,7 @@ function Examinations() {
   
   const getData = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/get_courses');
+      const res = await axios.get('https://college-backend-4-cgya.onrender.com/get_courses');
       setData_(res.data);
       setChange(!change)
     } catch (error) {
@@ -79,31 +79,31 @@ function Examinations() {
   };
   
   const get_ad_data=async()=>{
-    const res=await axios.get('http://localhost:3000/get_admission_data',{params:{username,email}});
+    const res=await axios.get('https://college-backend-4-cgya.onrender.com/get_admission_data',{params:{username,email}});
     setData(res.data.admission_data);
     setChange(!change)
   }
 
   const get_sub_data=async()=>{
-    const res=await axios.get('http://localhost:3000/get_sub_data');
+    const res=await axios.get('https://college-backend-4-cgya.onrender.com/get_sub_data');
     setSubData(res.data);
     setChange(!change)
   }
 
   const handleSubmit=async(e)=>{
     e.preventDefault();
-   const res = await axios.post('http://localhost:3000/apply_exam',formData);
+   const res = await axios.post('https://college-backend-4-cgya.onrender.com/apply_exam',formData);
    setChange(!change)
    alert("Successfully applied for examination");
   }
 
   const getExamData=async()=>{
-    const res=await axios.get(`http://localhost:3000/get_exam_data/${username}/${email}`);
+    const res=await axios.get(`https://college-backend-4-cgya.onrender.com/get_exam_data/${username}/${email}`);
     setExamData(res.data)
   }
 
   const handleDelete=async(id)=>{
-   const res = await axios.delete('http://localhost:3000/delete_exam_application/'+id);
+   const res = await axios.delete('https://college-backend-4-cgya.onrender.com/delete_exam_application/'+id);
    alert("Exam form successfully deleted");
    setChange(!change);
   }

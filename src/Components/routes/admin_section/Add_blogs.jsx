@@ -14,7 +14,7 @@ function Add_blogs() {
   const [change,setChange]=useState(true)
 
   const getData=async()=>{
-    const res=await axios.post('http://localhost:3000/get_blogs_data');
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/get_blogs_data');
     setMainData(res.data);
   }
 
@@ -24,7 +24,7 @@ function Add_blogs() {
   },[change])
 
   async function handleDelete(id){
-    const res=await axios.post('http://localhost:3000/delete_blog_info',{id});
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/delete_blog_info',{id});
     setChange(prev=>!prev)
   }
 
@@ -39,7 +39,7 @@ function Add_blogs() {
     formData.append('title',data.title);
     formData.append('description',data.description);
     formData.append('file',file);
-    const res=await axios.post('http://localhost:3000/add_blog',formData);
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/3000/add_blog',formData);
     setChange(prev=>!prev)
     
   }

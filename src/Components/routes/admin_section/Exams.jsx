@@ -7,13 +7,13 @@ function Exam(){
     const [change,setChange]=useState(false);
 
     const getData=async()=>{
-       const res= await axios.get('http://localhost:3000/get_exam_data') ;
+       const res= await axios.get('https://college-backend-4-cgya.onrender.com/get_exam_data') ;
        setData(res.data)
        setChange(prev=>!prev);
     }
 
     const handleRelease=async(id)=>{
-     const res=await axios.post('http://localhost:3000/release_hallticket',{id});
+     const res=await axios.post('https://college-backend-4-cgya.onrender.com/release_hallticket',{id});
         setChange(prev=>!prev);
     }
 

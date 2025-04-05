@@ -9,7 +9,7 @@ function New_course() {
 
   const handleSubmit=async(e)=>{
     e.preventDefault();
-    const res= await axios.post('http://localhost:3000/add_course',{courseName,fees,perYearFees})
+    const res= await axios.post('https://college-backend-4-cgya.onrender.com/add_course',{courseName,fees,perYearFees})
     alert(res.data);
     setCourseName("");
     setFees("");
@@ -17,12 +17,12 @@ function New_course() {
   }
 
   const handleDelete=async (id)=>{
-    const res=await axios.delete(`http://localhost:3000/delete_course/${id}`)
+    const res=await axios.delete(`https://college-backend-4-cgya.onrender.com/delete_course/${id}`)
     alert(res.data)
   }
 
   const getData=async ()=>{
-    let res=await axios('http://localhost:3000/get_courses');
+    let res=await axios('https://college-backend-4-cgya.onrender.com/get_courses');
     setData(res.data)
   }
   useEffect(()=>{

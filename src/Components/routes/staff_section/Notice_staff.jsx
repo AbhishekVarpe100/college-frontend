@@ -5,7 +5,7 @@ function Notice_staff() {
   const [data,setData]=useState([]);
 
   const getData=async()=>{
-    const res=await axios.get('http://localhost:3000/get_notices');
+    const res=await axios.get('https://college-backend-4-cgya.onrender.com/get_notices');
     setData(res.data.reverse());
   }
 

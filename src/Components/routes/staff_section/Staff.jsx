@@ -20,7 +20,7 @@ function Staff() {
 
   async function sendToken() {
     let token_header = localStorage.getItem('token');
-    const response = await axios.post('http://localhost:3000/staff', {
+    const response = await axios.post('https://college-backend-4-cgya.onrender.com/staff', {
       token_header,
     });
     

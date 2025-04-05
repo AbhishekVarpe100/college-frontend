@@ -41,7 +41,7 @@ const Statistics = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/admission_data');
+      const res = await axios.get('https://college-backend-4-cgya.onrender.com/admission_data');
       const data = res.data;
       setAdmissionData(data);
 

@@ -8,19 +8,19 @@ function Announcement() {
     const [change,setChange]=useState(true)
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        const res=await axios.post('http://localhost:3000/create_notice',{notice});
+        const res=await axios.post('https://college-backend-4-cgya.onrender.com/create_notice',{notice});
         change? setChange(false):setChange(true);
         
     }
 
 
     const handleDelete=async (id)=>{
-     const res= await axios.post('http://localhost:3000/delete_notice',{id})
+     const res= await axios.post('https://college-backend-4-cgya.onrender.com/delete_notice',{id})
       change? setChange(false):setChange(true);
     }
 
     const getData=async()=>{
-      const res=await axios.get('http://localhost:3000/get_notices');
+      const res=await axios.get('https://college-backend-4-cgya.onrender.com/get_notices');
       setData(res.data.reverse());
       // console.log(res.data)
     }

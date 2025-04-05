@@ -25,7 +25,7 @@ function EditInfo() {
 
     const handleSubmit=async (e)=>{
         e.preventDefault();
-        const res=await axios.post('http://localhost:3000/edit_info',newData)
+        const res=await axios.post('https://college-backend-4-cgya.onrender.com/edit_info',newData)
         if(res.data){
             localStorage.setItem('email',newEmail);
             localStorage.setItem('username',newUsername);
@@ -42,7 +42,7 @@ function EditInfo() {
 
       
       async function getData(){
-          const response=await axios.post('http://localhost:3000/getprofile_data',dataObj);
+          const response=await axios.post('https://college-backend-4-cgya.onrender.com/getprofile_data',dataObj);
           setNewUsername(response.data.username)
           setNewEmail(response.data.email)
       }

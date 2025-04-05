@@ -24,14 +24,14 @@ function ContactUs() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post('http://localhost:3000/users_query', data);
+    const res = await axios.post('https://college-backend-4-cgya.onrender.com/users_query', data);
     if (res) {
       alert(res.data);
     }
   };
 
   const getData = async () => {
-    const res = await axios.get("http://localhost:3000/get_queries", { params: { username, email } });
+    const res = await axios.get("https://college-backend-4-cgya.onrender.com/get_queries", { params: { username, email } });
     setQueries(res.data);
   };
 
@@ -40,7 +40,7 @@ function ContactUs() {
   });
 
   const handleDelete = async (id) => {
-    const res = await axios.delete(`http://localhost:3000/delete_query/${id}`);
+    const res = await axios.delete(`https://college-backend-4-cgya.onrender.com/delete_query/${id}`);
     alert(res.data);
   };
 

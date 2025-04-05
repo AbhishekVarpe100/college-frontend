@@ -9,7 +9,7 @@ function Add_Subjects() {
     const [render,setRender]=useState(false)
     const handleSubmit=async(e)=>{
         e.preventDefault();
-        const res=await axios.post('http://localhost:3000/add_sub',{sub,marks})
+        const res=await axios.post('https://college-backend-4-cgya.onrender.com/add_sub',{sub,marks})
         if(res){
             alert("Added")
             setSub("");
@@ -20,13 +20,13 @@ function Add_Subjects() {
 
     const getSubData=async()=>{
         
-            const res=await axios.get('http://localhost:3000/get_sub_data');
+            const res=await axios.get('https://college-backend-4-cgya.onrender.com/get_sub_data');
             setSubData(res.data)
         
     }
 
     const handleDelete=async (id)=>{
-       const res= await axios.delete(`http://localhost:3000/delete_sub/${id}`);
+       const res= await axios.delete(`https://college-backend-4-cgya.onrender.com/delete_sub/${id}`);
         alert("Deleted")
         if(res){
             setRender(prev=>!prev)

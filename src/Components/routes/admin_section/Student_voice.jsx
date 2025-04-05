@@ -8,7 +8,7 @@ function StudentVoice() {
   const [id,setId]=useState('');
 
   const getData = async () => {
-    const res = await axios.get("http://localhost:3000/get_queries_all");
+    const res = await axios.get("https://college-backend-4-cgya.onrender.com/get_queries_all");
     setQueries(res.data);
   };
 
@@ -22,7 +22,7 @@ function StudentVoice() {
   
   const handleSubmit=async (e)=>{
     e.preventDefault();
-    const res=await axios.post('http://localhost:3000/reply',{id,reply});
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/reply',{id,reply});
     alert(res.data);
   }
 

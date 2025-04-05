@@ -19,7 +19,7 @@ function Campus() {
   };
 
   const getData = async () => {
-    const res = await axios.post('http://localhost:3000/get_videos');
+    const res = await axios.post('https://college-backend-4-cgya.onrender.com/get_videos');
     setVideos(res.data);
   };
 

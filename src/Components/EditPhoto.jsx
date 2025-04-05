@@ -13,7 +13,7 @@ function EditPhoto() {
         formData.append('id',id);
         formData.append('type',type);
         formData.append('file',file);
-        const res=await axios.post('http://localhost:3000/edit_photo',formData);
+        const res=await axios.post('https://college-backend-4-cgya.onrender.com/edit_photo',formData);
         if(res.data=='uploaded'){
             navigate('/profile_img')
         }

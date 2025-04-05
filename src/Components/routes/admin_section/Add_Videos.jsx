@@ -23,7 +23,7 @@ function Add_Videos() {
     const formData = new FormData();
     formData.append('title', title);
     formData.append('file', file);
-    const res = await axios.post('http://localhost:3000/add_video', formData, {
+    const res = await axios.post('https://college-backend-4-cgya.onrender.com/add_video', formData, {
       onUploadProgress: (progressEvent) => {
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
@@ -37,7 +37,7 @@ function Add_Videos() {
 
 
   const getData=async()=>{
-    const res=await axios.post('http://localhost:3000/get_videos');
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/get_videos');
     setVideos(res.data);
     change?setChange(false):setChange(true)
   }
@@ -47,7 +47,7 @@ function Add_Videos() {
   },[change])
 
   async function handleDelete(id){
-  const res=await axios.delete('http://localhost:3000/delete_video',{data:{id}});
+  const res=await axios.delete('https://college-backend-4-cgya.onrender.com/delete_video',{data:{id}});
   change?setChange(false):setChange(true)
   }
 

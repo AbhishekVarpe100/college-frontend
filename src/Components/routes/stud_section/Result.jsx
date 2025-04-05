@@ -9,7 +9,7 @@ function Result() {
   const [th,getTh]=useState(localStorage.getItem('theme'));
   const handleSubmit=async(e)=>{
     e.preventDefault();
-   const res=await axios.get('http://localhost:3000/get_result',{params:{prn}});
+   const res=await axios.get('https://college-backend-4-cgya.onrender.com/get_result',{params:{prn}});
    setData(res.data.data);
    setChange(prev=>!prev);
   }
@@ -19,7 +19,7 @@ function Result() {
   const handleDownload = async (file,username) => {
     try {
       const response = await axios({
-        url: 'http://localhost:3000/download_result',
+        url: 'https://college-backend-4-cgya.onrender.com/download_result',
         method: 'GET',
         responseType: 'blob', // Important
         params:{file}

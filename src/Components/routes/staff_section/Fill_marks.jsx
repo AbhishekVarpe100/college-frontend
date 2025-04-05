@@ -17,7 +17,7 @@ function Fill_marks() {
 
 
   const getData=async()=>{
-   const res=await axios.get('http://localhost:3000/stud_exam_data',{params:{id}});
+   const res=await axios.get('https://college-backend-4-cgya.onrender.com/stud_exam_data',{params:{id}});
    setData(res.data)
   }
 
@@ -28,7 +28,7 @@ function Fill_marks() {
 
   const handleSubmit=(e)=>{
     e.preventDefault();
-   const res = axios.post('http://localhost:3000/create_result',{...data,...marks});
+   const res = axios.post('https://college-backend-4-cgya.onrender.com/create_result',{...data,...marks});
    alert("Result created");
    
   }

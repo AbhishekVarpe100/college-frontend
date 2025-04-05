@@ -7,7 +7,7 @@ function Blogs() {
   const [mainData,setMainData]=useState([]);
 
   const getData=async()=>{
-    const res=await axios.post('http://localhost:3000/get_blogs_data');
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/get_blogs_data');
     setMainData(res.data);
   }
 

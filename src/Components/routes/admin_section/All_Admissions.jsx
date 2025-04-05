@@ -5,16 +5,16 @@ function All_Admissions() {
   const [ad_data,setAdData]=useState([]);
 
   const getAdmissionData=async()=>{
-    const res=await axios.get('http://localhost:3000/get_admission_data_all'); 
+    const res=await axios.get('https://college-backend-4-cgya.onrender.com/get_admission_data_all'); 
     setAdData(res.data.admission_data);
   }
 
   const handleApprove=async(id)=>{
-    await axios.put('http://localhost:3000/approve',{id});
+    await axios.put('https://college-backend-4-cgya.onrender.com/approve',{id});
   }
 
   const handleNotApprove=async (id)=>{
-    await axios.put('http://localhost:3000/not_approve',{id});
+    await axios.put('https://college-backend-4-cgya.onrender.com/not_approve',{id});
   }
 
   useEffect(()=>{

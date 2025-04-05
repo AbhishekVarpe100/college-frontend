@@ -14,7 +14,7 @@ function Admissions() {
 
   const getData = async () => {
     try {
-      const res = await axios.get('http://localhost:3000/get_courses');
+      const res = await axios.get('https://college-backend-4-cgya.onrender.com/get_courses');
       setData(res.data);
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -35,18 +35,18 @@ function Admissions() {
 
 
   const getAdmissionData=async()=>{
-    const res=await axios.get('http://localhost:3000/get_admission_data',{params:{username,email}}) 
+    const res=await axios.get('https://college-backend-4-cgya.onrender.com/get_admission_data',{params:{username,email}}) 
     setAdData(res.data.admission_data);
   }
 
   const handleSubmit=async(e)=>{
     e.preventDefault();
-   const res= await axios.post('http://localhost:3000/add_admission',dataObj)
+   const res= await axios.post('https://college-backend-4-cgya.onrender.com/add_admission',dataObj)
    alert(res.data.msg)
   }
 
   const handleDelete=async(id)=>{
-    await axios.delete(`http://localhost:3000/delete_admission/${id}`)
+    await axios.delete(`https://college-backend-4-cgya.onrender.com/delete_admission/${id}`)
     alert("Deleted")
   }
 

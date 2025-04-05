@@ -31,7 +31,7 @@ function Profile() {
 
   async function sendToken() {
     let token_header = localStorage.getItem('token');
-    const response = await axios.post('http://localhost:3000/getprofile', {
+    const response = await axios.post('https://college-backend-4-cgya.onrender.com/getprofile', {
       token_header,
     });
 

@@ -17,14 +17,14 @@ function ProfilePhoto() {
   const [th,getTh]=useState(localStorage.getItem('theme'));
 
   const  handleDelete=async(id,type,photo)=>{
-    const res=await axios.post('http://localhost:3000/delete_photo',{id,type,photo})
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/delete_photo',{id,type,photo})
     if(res.data){
       window.location.reload();
     }
   }
 
   const handleDeleteAcc=async(id,type)=>{
-    const res=await axios.get('http://localhost:3000/delete_info', {params :{id,type}})
+    const res=await axios.get('https://college-backend-4-cgya.onrender.com/delete_info', {params :{id,type}})
     if(res.data){
       navigate('/login');
       localStorage.removeItem('username');
@@ -42,7 +42,7 @@ function ProfilePhoto() {
   }
 
   async function getData(){
-      const response=await axios.post('http://localhost:3000/getprofile_data',dataObj);
+      const response=await axios.post('https://college-backend-4-cgya.onrender.com/getprofile_data',dataObj);
       setData(response.data)
   }
 

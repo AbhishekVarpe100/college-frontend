@@ -17,7 +17,7 @@ function Add_Placements() {
   const [change,setChange]=useState(true)
 
   const getData=async()=>{
-    const res=await axios.post('http://localhost:3000/get_placements_data');
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/get_placements_data');
     setMainData(res.data);
   }
 
@@ -28,7 +28,7 @@ function Add_Placements() {
 
 
  async function handleDelete(id){
-    const res=await axios.post('http://localhost:3000/delete_placement_info',{id});
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/delete_placement_info',{id});
     setChange(prev=>!prev)
   }
 
@@ -44,7 +44,7 @@ function Add_Placements() {
    formData.append('package_',data.package_);
    formData.append('file',file);
    formData.append('company',data.company);
-   const res=await axios.post('http://localhost:3000/create_placement',formData);
+   const res=await axios.post('https://college-backend-4-cgya.onrender.com/create_placement',formData);
    setChange(prev=>!prev)
 
   }
