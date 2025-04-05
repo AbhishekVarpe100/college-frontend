@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { motion } from "framer-motion";
 
 // Import individual MUI components instead of the entire package
 // to avoid potential build issues
@@ -69,17 +68,17 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Reset form errors
     setFormErrors({ username: false, password: false });
-    
+
     try {
       const response = await axios.post("https://college-backend-4-cgya.onrender.com/login", {
         type,
         username,
         password,
       });
-      
+
       localStorage.setItem("token", `bearer ${response.data.token}`);
       localStorage.setItem("username", `${response.data.userName}`);
       localStorage.setItem("email", `${response.data.email}`);
@@ -150,117 +149,111 @@ function Login() {
         }}
       >
         <Container maxWidth="sm">
-          <motion.div
-            initial={{ y: 50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Paper elevation={8} sx={{ p: 4 }}>
-              <Typography variant="h4" component="h1" align="center" gutterBottom fontWeight="500">
-                Login
-              </Typography>
+          <Paper elevation={8} sx={{ p: 4 }}>
+            <Typography variant="h4" component="h1" align="center" gutterBottom fontWeight="500">
+              Login
+            </Typography>
 
-              {alert.show && (
-                <Alert severity={alert.severity} sx={{ mb: 2 }}>
-                  {alert.message}
-                </Alert>
-              )}
+            {alert.show && (
+              <Alert severity={alert.severity} sx={{ mb: 2 }}>
+                {alert.message}
+              </Alert>
+            )}
 
-              <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                <FormControl fullWidth margin="normal" required>
-                  <InputLabel id="login-type-label">Login Type</InputLabel>
-                  <Select
-                    labelId="login-type-label"
-                    id="login-type"
-                    value={type}
-                    label="Login Type"
-                    onChange={(e) => setType(e.target.value)}
-                  >
-                    <MenuItem value="">Select</MenuItem>
-                    <MenuItem value="student">Student</MenuItem>
-                    <MenuItem value="staff">Staff</MenuItem>
-                    <MenuItem value="admin">Admin</MenuItem>
-                  </Select>
-                  {!type && (
-                    <FormHelperText error>Please select your login type</FormHelperText>
-                  )}
-                </FormControl>
-
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="username"
-                  label="Username"
-                  name="username"
-                  autoComplete="username"
-                  autoFocus
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  error={formErrors.username}
-                  helperText={formErrors.username ? "Invalid username" : ""}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <FaUser />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type={showPassword ? "text" : "password"}
-                  id="password"
-                  autoComplete="current-password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  error={formErrors.password}
-                  helperText={formErrors.password ? "Invalid password" : ""}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <FaLock />
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={togglePasswordVisibility}
-                          edge="end"
-                        >
-                          {showPassword ? <FaEyeSlash /> : <FaEye />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                />
-
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  size="large"
-                  sx={{ 
-                    mt: 3, 
-                    mb: 2, 
-                    py: 1.5,
-                    position: 'relative'
-                  }}
+            <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+              <FormControl fullWidth margin="normal" required>
+                <InputLabel id="login-type-label">Login Type</InputLabel>
+                <Select
+                  labelId="login-type-label"
+                  id="login-type"
+                  value={type}
+                  label="Login Type"
+                  onChange={(e) => setType(e.target.value)}
                 >
-                  <Box sx={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }}>
-                    <FaSignInAlt />
-                  </Box>
-                  Sign In
-                </Button>
-              </Box>
-            </Paper>
-          </motion.div>
+                  <MenuItem value="">Select</MenuItem>
+                  <MenuItem value="student">Student</MenuItem>
+                  <MenuItem value="staff">Staff</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
+                </Select>
+                {!type && (
+                  <FormHelperText error>Please select your login type</FormHelperText>
+                )}
+              </FormControl>
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="username"
+                label="Username"
+                name="username"
+                autoComplete="username"
+                autoFocus
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                error={formErrors.username}
+                helperText={formErrors.username ? "Invalid username" : ""}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FaUser />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type={showPassword ? "text" : "password"}
+                id="password"
+                autoComplete="current-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                error={formErrors.password}
+                helperText={formErrors.password ? "Invalid password" : ""}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <FaLock />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={togglePasswordVisibility}
+                        edge="end"
+                      >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                size="large"
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  py: 1.5,
+                  position: 'relative'
+                }}
+              >
+                <Box sx={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }}>
+                  <FaSignInAlt />
+                </Box>
+                Sign In
+              </Button>
+            </Box>
+          </Paper>
         </Container>
       </Box>
     </ThemeProvider>
@@ -268,3 +261,4 @@ function Login() {
 }
 
 export default Login;
+
