@@ -1,0 +1,22 @@
+.about-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .about-content {
+    max-width: 800px;
+    background-color: #f8fafc; /* Tailwind's gray-100 */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  h1, h2 {
+    color: #1f2937; /* Tailwind's gray-900 */
+  }
+  
+  p {
+    color: #4b5563; /* Tailwind's gray-600 */
+    line-height: 1.6;
+  }
+  

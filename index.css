@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.sea-waves {
+    font-size: 3rem; /* Adjust as needed */
+    font-weight: bold;
+    text-align: center;
+    background: linear-gradient(
+        to right,
+        #0000ff,
+        #a719ce,
+        #1e90ff,
+        #129cce,
+        #0000ff,
+        #0bff7d,
+        #000000,
+        #9f7389,
+        #ffffff,
+        #acc927
+    );
+    background-size: 300% 100%;
+    background-clip: text;
+    color: transparent;
+    animation: wave 15s infinite linear;
+}
+
+@keyframes wave {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.fixed-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000; /* Ensure the navbar is above other content */
+    background-color: black; /* Ensure background color covers full width */
+    padding: 1.5rem; /* Adjust padding if needed */
+  }
+  
+  .content {
+    padding-top: 4.7rem; /* Adjust this value based on the height of your navbar */
+  }
+  
