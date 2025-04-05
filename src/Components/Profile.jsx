@@ -1,33 +1,38 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { MdClose } from "react-icons/md";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { Link, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { FaBloggerB } from "react-icons/fa6";
-import { FaGraduationCap } from "react-icons/fa6";
-import { MdPhoneInTalk } from "react-icons/md";
+import { Link, Outlet } from 'react-router-dom';
+import { FaBloggerB, FaGraduationCap } from "react-icons/fa6";
+import { MdPhoneInTalk, MdClose } from "react-icons/md";
+import { GiHamburgerMenu } from "react-icons/gi";
 import { CgNotes } from "react-icons/cg";
-
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  AppBar,
+  Toolbar,
+  Typography,
+  Box
+} from '@mui/material';
 
 function Profile() {
   const [tokenValid, setTokenValid] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem('theme'));
 
-  const [th,getTh]=useState(localStorage.getItem('theme'));
-  
+  const username = useSelector((state) => state.username);
+  const email = useSelector((state) => state.email);
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-  
 
   useEffect(() => {
     sendToken();
   }, []);
-
-  const username = useSelector((state) => state.username);
-  const email = useSelector((state) => state.email);
 
   async function sendToken() {
     let token_header = localStorage.getItem('token');
@@ -36,149 +41,113 @@ function Profile() {
     });
 
     if (response.data.message === 'profile_accessed') {
-      if(localStorage.getItem('token') && localStorage.getItem('email') && localStorage.getItem('type')=='student'){
+      if (localStorage.getItem('token') && localStorage.getItem('email') && localStorage.getItem('type') === 'student') {
         setTokenValid(true);
         localStorage.setItem(
           'token_expires_in',
           `${(response.data.authData.exp - response.data.authData.iat) / 60} minutes`
         );
-      } 
-      
+      }
     } else if (response.data.result === 'invalid token') {
       setTokenValid(false);
       setTimeout(() => {
-        localStorage.removeItem('username');
-        localStorage.removeItem('email');
-        localStorage.removeItem('token_expires_in');
-        localStorage.removeItem('token');
+        localStorage.clear();
       }, 3000);
     }
   }
+
+  const navLinks = [
+    { text: 'About', to: '/profile/' },
+    { text: 'Examinations', to: '/profile/examinations', icon: <FaGraduationCap className="ml-2" /> },
+    { text: 'Admissions', to: '/profile/admissions' },
+    { text: 'Placements', to: '/profile/placements' },
+    { text: 'Campus and events videos', to: '/profile/campus' },
+    { text: 'Blogs', to: '/profile/blogs', icon: <FaBloggerB className="ml-2" /> },
+    { text: 'Contact Us', to: '/profile/contact_us', icon: <MdPhoneInTalk className="ml-2" /> },
+    { text: 'Results', to: '/profile/results', icon: <CgNotes className="ml-2" /> },
+    { text: 'Notice', to: '/profile/notices' }
+  ];
 
   return (
     <div>
       {tokenValid ? (
         <>
-          <div className="flex my-4 py-4">
-            {/* Sidebar */}
-            <div   className={`sidebar overflow-y-auto  ${th=='dark'? 'bg-black text-white':'bg-white text-black'} text-white w-64 min-h-screen flex-shrink-0 ${isSidebarOpen ? '' : 'hidden md:block'}`}>
-              <div className="p-4">
-                <h2 className={`text-2xl ${th=='dark'? 'bg-black text-white':'bg-white text-black'} font-bold mb-6`}>Content</h2>
-                <ul>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/"
-                      className="rounded block p-2 bg-gray-700 hover:bg-gray-600"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      About
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/examinations"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
+          <AppBar position="static" sx={{ backgroundColor: theme === 'dark' ? 'black' : 'white', color: theme === 'dark' ? 'white' : 'black' }}>
+            <Toolbar>
+              <IconButton edge="start" color="inherit" aria-label="menu" onClick={toggleSidebar} sx={{ display: { md: 'none' } }}>
+                {isSidebarOpen ? <MdClose /> : <GiHamburgerMenu />}
+              </IconButton>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                Welcome, {username}
+              </Typography>
+            </Toolbar>
+          </AppBar>
 
-                      <span className="flex items-center">Examinations <FaGraduationCap className='ml-2'></FaGraduationCap></span>
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/admissions"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      Admissions
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/placements"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      Placements
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/campus"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      Campus and events videos
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/blogs"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      <span className="flex items-center">
-                          Blogs <FaBloggerB className="ml-2" />
-                      </span>
-                      
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/contact_us"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      <span className="flex items-center">
+          {/* Sidebar Drawer */}
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: 'none', md: 'block' },
+              '& .MuiDrawer-paper': {
+                width: 250,
+                backgroundColor: theme === 'dark' ? '#111' : '#f9f9f9',
+                color: theme === 'dark' ? '#fff' : '#000'
+              }
+            }}
+            open
+          >
+            <List>
+              <Typography variant="h6" sx={{ m: 2, fontWeight: 'bold' }}>Content</Typography>
+              {navLinks.map((item, index) => (
+                <ListItem
+                  button
+                  key={index}
+                  component={Link}
+                  to={item.to}
+                  onClick={() => setIsSidebarOpen(false)}
+                >
+                  <ListItemText primary={item.text} />
+                  {item.icon && <span>{item.icon}</span>}
+                </ListItem>
+              ))}
+            </List>
+          </Drawer>
 
-                        Contact Us <MdPhoneInTalk className='ml-2'></MdPhoneInTalk>
-                      </span>
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/results"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      <span className="flex items-center">Results <CgNotes className='ml-2'></CgNotes></span>
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    <Link
-                      to="/profile/notices"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      <span className="flex items-center">Notice</span>
-                    </Link>
-                  </li>
-                  <li className="mb-2">
-                    {/* <Link
-                      to="/profile/chat"
-                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
-                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
-                    >
-                      <span className="flex items-center">Message to admin</span>
-                    </Link> */}
-                  </li>
-                </ul>
-              </div>
-            </div>
+          {/* Sidebar for small screens */}
+          <Drawer
+            variant="temporary"
+            open={isSidebarOpen}
+            onClose={toggleSidebar}
+            sx={{
+              display: { xs: 'block', md: 'none' },
+              '& .MuiDrawer-paper': {
+                width: 250,
+                backgroundColor: theme === 'dark' ? '#111' : '#f9f9f9',
+                color: theme === 'dark' ? '#fff' : '#000'
+              }
+            }}
+          >
+            <List>
+              <Typography variant="h6" sx={{ m: 2, fontWeight: 'bold' }}>Content</Typography>
+              {navLinks.map((item, index) => (
+                <ListItem
+                  button
+                  key={index}
+                  component={Link}
+                  to={item.to}
+                  onClick={toggleSidebar}
+                >
+                  <ListItemText primary={item.text} />
+                  {item.icon && <span>{item.icon}</span>}
+                </ListItem>
+              ))}
+            </List>
+          </Drawer>
 
-            {/* Main Content */}
-            <div className="flex-1 p-6 bg-gray-100">
-              <button
-                className="md:hidden p-4 bg-gray-800 text-white"
-                onClick={toggleSidebar}
-              >
-                {isSidebarOpen? <MdClose></MdClose> : <GiHamburgerMenu></GiHamburgerMenu> }
-              </button>
-              <div className="ml-4 md:ml-0">
-                <Outlet />
-              </div>
-            </div>
-          </div>
+          {/* Main Content */}
+          <Box component="main" sx={{ marginLeft: { md: 30 }, padding: 3, backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+            <Outlet />
+          </Box>
         </>
       ) : (
         <div className="m-10">
@@ -196,4 +165,5 @@ function Profile() {
   );
 }
 
-export default Profile; 
+export default Profile;
+
