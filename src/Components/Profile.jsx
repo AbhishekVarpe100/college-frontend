@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+the menu bar is overlapping the main nav bar on the small devices 
+ fix it             import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -6,14 +7,15 @@ import {
   AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItem, ListItemIcon,
   ListItemText, CssBaseline, Box, Divider
 } from '@mui/material';
-
-import { MdClose, MdPhoneInTalk, MdVideoLibrary, MdOutlineAnnouncement } from "react-icons/md";
+import { MdClose, MdPhoneInTalk } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaBloggerB, FaGraduationCap } from "react-icons/fa6";
+import { FaBloggerB, FaGraduationCap} from "react-icons/fa6";
 import { CgNotes } from "react-icons/cg";
-import { FaUniversity } from 'react-icons/fa';
+import { FaUniversity } from 'react-icons/fa'; 
 import { IoIosInformationCircle } from "react-icons/io";
+import { MdOutlineAnnouncement } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
+import { MdVideoLibrary } from "react-icons/md";
 
 const drawerWidth = 240;
 
@@ -80,13 +82,7 @@ function Profile() {
       <Divider />
       <List>
         {navItems.map((item, index) => (
-          <ListItem
-            button
-            key={index}
-            component={Link}
-            to={item.path}
-            onClick={() => setMobileOpen(false)}
-          >
+          <ListItem button key={index} component={Link} to={item.path} onClick={() => setMobileOpen(false)}>
             <ListItemIcon>{item.icon}</ListItemIcon>
             <ListItemText primary={item.label} />
           </ListItem>
@@ -100,11 +96,7 @@ function Profile() {
       <CssBaseline />
       {tokenValid ? (
         <Box sx={{ display: 'flex' }}>
-          {/* AppBar */}
-          <AppBar
-            position="fixed"
-            sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          >
+          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
             <Toolbar>
               <IconButton
                 color="inherit"
@@ -120,7 +112,6 @@ function Profile() {
             </Toolbar>
           </AppBar>
 
-          {/* Sidebar Navigation */}
           <Box
             component="nav"
             sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
@@ -134,10 +125,7 @@ function Profile() {
               ModalProps={{ keepMounted: true }}
               sx={{
                 display: { xs: 'block', md: 'none' },
-                '& .MuiDrawer-paper': {
-                  width: drawerWidth,
-                  top: 64, // ensure it's below the AppBar
-                },
+                '& .MuiDrawer-paper': { width: drawerWidth },
               }}
             >
               {drawer}
@@ -166,7 +154,7 @@ function Profile() {
               minHeight: '100vh',
             }}
           >
-            <Toolbar /> {/* For spacing below AppBar */}
+            <Toolbar />
             <Box sx={{ mb: 2 }}>
               <Typography variant="h5" fontWeight="bold" color="primary">
                 Welcome, {username || 'Student'}!
@@ -180,14 +168,7 @@ function Profile() {
           <Typography variant="h6" gutterBottom>
             Your token has expired.
           </Typography>
-          <Link
-            to="/login"
-            style={{
-              color: '#1976d2',
-              fontWeight: 'bold',
-              textDecoration: 'underline',
-            }}
-          >
+          <Link to="/login" style={{ color: '#1976d2', fontWeight: 'bold', textDecoration: 'underline' }}>
             Login here
           </Link>{' '}
           again to continue.
@@ -198,4 +179,3 @@ function Profile() {
 }
 
 export default Profile;
-
