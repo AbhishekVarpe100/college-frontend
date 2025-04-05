@@ -161,7 +161,7 @@ function Login() {
             )}
 
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-              <FormControl fullWidth margin="normal" required>
+              <FormControl fullWidth margin="normal">
                 <InputLabel id="login-type-label">Login Type</InputLabel>
                 <Select
                   labelId="login-type-label"
