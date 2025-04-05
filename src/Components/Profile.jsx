@@ -1,19 +1,21 @@
-import React, { useEffect, useState } from 'react';
+the menu bar is overlapping the main nav bar on the small devices 
+ fix it             import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
-  AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemIcon,
+  AppBar, Toolbar, IconButton, Typography, Drawer, List, ListItem, ListItemIcon,
   ListItemText, CssBaseline, Box, Divider
 } from '@mui/material';
 import { MdClose, MdPhoneInTalk } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaBloggerB, FaGraduationCap } from "react-icons/fa6";
+import { FaBloggerB, FaGraduationCap} from "react-icons/fa6";
 import { CgNotes } from "react-icons/cg";
-import { FaUniversity } from 'react-icons/fa';
+import { FaUniversity } from 'react-icons/fa'; 
 import { IoIosInformationCircle } from "react-icons/io";
-import { MdOutlineAnnouncement, MdVideoLibrary } from "react-icons/md";
+import { MdOutlineAnnouncement } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
+import { MdVideoLibrary } from "react-icons/md";
 
 const drawerWidth = 240;
 
@@ -32,7 +34,9 @@ const navItems = [
 function Profile() {
   const [tokenValid, setTokenValid] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+
   const username = useSelector((state) => state.username);
+  const email = useSelector((state) => state.email);
 
   useEffect(() => {
     sendToken();
@@ -71,7 +75,9 @@ function Profile() {
   const drawer = (
     <div>
       <Toolbar>
-        <Typography variant="h6" noWrap>Student Panel</Typography>
+        <Typography variant="h6" noWrap>
+          Student Panel
+        </Typography>
       </Toolbar>
       <Divider />
       <List>
@@ -90,16 +96,19 @@ function Profile() {
       <CssBaseline />
       {tokenValid ? (
         <Box sx={{ display: 'flex' }}>
-          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 2 }}>
-            <Toolbar sx={{ justifyContent: 'space-between' }}>
+          <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
+            <Toolbar>
               <IconButton
                 color="inherit"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ display: { md: 'none' }, p: 1 }}
+                sx={{ mr: 2, display: { md: 'none' } }}
               >
                 {mobileOpen ? <MdClose /> : <GiHamburgerMenu />}
               </IconButton>
+              <Typography variant="h6" noWrap>
+                Student Dashboard
+              </Typography>
             </Toolbar>
           </AppBar>
 
@@ -116,10 +125,7 @@ function Profile() {
               ModalProps={{ keepMounted: true }}
               sx={{
                 display: { xs: 'block', md: 'none' },
-                '& .MuiDrawer-paper': {
-                  width: drawerWidth,
-                  zIndex: (theme) => theme.zIndex.drawer + 3,
-                },
+                '& .MuiDrawer-paper': { width: drawerWidth },
               }}
             >
               {drawer}
@@ -146,9 +152,9 @@ function Profile() {
               p: 3,
               bgcolor: '#f4f6f8',
               minHeight: '100vh',
-              mt: { xs: '64px', md: 0 }, // Prevent overlap under AppBar on mobile
             }}
           >
+            <Toolbar />
             <Box sx={{ mb: 2 }}>
               <Typography variant="h5" fontWeight="bold" color="primary">
                 Welcome, {username || 'Student'}!
@@ -173,4 +179,3 @@ function Profile() {
 }
 
 export default Profile;
-
