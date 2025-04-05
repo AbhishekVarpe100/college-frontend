@@ -68,7 +68,7 @@ function App() {
     setTheme(newTheme);
 
     try {
-      await axios.post('http://localhost:3000/change_theme', {
+      await axios.post('https://college-backend-4-cgya.onrender.com/change_theme', {
         theme: newTheme,
         username,
         email,
@@ -82,7 +82,7 @@ function App() {
 
 
  const getTheme_=async()=>{
- const res= await axios.get('http://localhost:3000/get_theme',{params:{username,email}});
+ const res= await axios.get('https://college-backend-4-cgya.onrender.com/get_theme',{params:{username,email}});
  }
 
   const dataObj={
@@ -92,7 +92,7 @@ function App() {
   }
 
   async function getData(){
-    const response=await axios.post('http://localhost:3000/getprofile_data',dataObj);
+    const response=await axios.post('https://college-backend-4-cgya.onrender.com/getprofile_data',dataObj);
     setData(response.data)
   }
   

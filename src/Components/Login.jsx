@@ -20,7 +20,7 @@ function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login', { type, username, password });
+      const response = await axios.post('https://college-backend-4-cgya.onrender.com/login', { type, username, password });
       localStorage.setItem('token', `bearer ${response.data.token}`);
       localStorage.setItem('username', `${response.data.userName}`);
       localStorage.setItem('email', `${response.data.email}`);
