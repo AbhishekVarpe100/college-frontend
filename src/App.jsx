@@ -106,150 +106,113 @@ useEffect(() => {
 
   return (
     <>
-      <BrowserRouter>
-        <nav className={`fixed top-0 left-0 ${th=='dark'? 'bg-black text-white':'bg-white text-black'} right-0  text-white flex items-center justify-between p-6 z-50 shadow-md`}>
-          <div className="space-x-4 flex items-center">
-            <Link to="/" className={`hover:underline ${th=='dark'? ' text-white':'bg-white text-black'}`}>
-              Home
-            </Link>
-            {username && email ? (
-              <>
-                <Link
-                  onClick={handleLogout}
-                  to="/login"
-                  className={`hover:underline ${th=='dark'? 'k text-white':'bg-white text-black'}`}
-                >
-                  Log Out
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/login"
-                  className={`hover:underline ${th=='dark'? 'text-white':'bg-white text-black'}`}
-                >
-                  Login   
-                </Link>
+      <nav className={`fixed top-0 left-0 right-0 ${th === 'dark' ? 'bg-black text-white' : 'bg-white text-black'} p-4 z-50 shadow-md`}>
+  <div className="flex items-center justify-between">
+    {/* Logo or Brand */}
+    <Link to="/" className="text-xl font-bold">
+      UniVerse
+    </Link>
 
-                <Link
-                  to="/register"
-                  className={`hover:underline ${th=='dark'? ' text-white':'bg-white text-black'}`}
-                >
-                  Register
-                </Link>
-              </>
-            )}
+    {/* Hamburger icon */}
+    <div className="md:hidden">
+      <button onClick={() => setMenuOpen(!menuOpen)} className="focus:outline-none">
+        {menuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+      </button>
+    </div>
 
+    {/* Desktop Menu */}
+    <div className="hidden md:flex space-x-6 items-center">
+      <Link to="/" className="hover:underline">Home</Link>
 
-{username && email && localStorage.getItem('type')=='student' && (
-  <div className="flex items-center space-x-4">
-    <label className="flex items-center cursor-pointer">
-      <div className="relative">
-        <input
-          type="checkbox"
-          id="theme-toggle"
-          className="sr-only"
-          checked={theme === 'dark'}
-          onChange={handleTheme}
-        />
-        <div
-          className={`w-14 h-8 bg-gray-300 rounded-full shadow-inner transition duration-300 ease-in-out ${theme === 'dark' ? 'bg-gray-600' : ''}`}
-        ></div>
-        <div
-          className={`absolute left-1 top-1 w-6 h-6 bg-white rounded-full shadow transform transition-transform duration-300 ease-in-out ${theme === 'dark' ? 'translate-x-full bg-gray-800' : ''}`}
-        ></div>
-      </div>
-      <div className={`hover:underline ${th=='dark'? 'text-white':'bg-white text-black' } ml-3 text-sm font-medium`}>
-      {theme === 'light' ? (  
-        <MdLightMode className="text-yellow-500 w-5 h-5" />
+      {username && email ? (
+        <Link onClick={handleLogout} to="/login" className="hover:underline">Log Out</Link>
       ) : (
-      <MdDarkMode className="text-blue-700 w-5 h-5" />
+        <>
+          <Link to="/login" className="hover:underline">Login</Link>
+          <Link to="/register" className="hover:underline">Register</Link>
+        </>
       )}
-      </div>
-    </label>
-  </div>
-)}
 
-           
-
-            
+      {/* Theme Toggle (Student only) */}
+      {username && email && localStorage.getItem('type') === 'student' && (
+        <label className="flex items-center cursor-pointer">
+          <div className="relative">
+            <input type="checkbox" className="sr-only" checked={theme === 'dark'} onChange={handleTheme} />
+            <div className={`w-14 h-8 rounded-full shadow-inner transition ${theme === 'dark' ? 'bg-gray-600' : 'bg-gray-300'}`} />
+            <div className={`absolute left-1 top-1 w-6 h-6 rounded-full shadow transform transition-transform duration-300 ease-in-out ${theme === 'dark' ? 'translate-x-full bg-gray-800' : 'bg-white'}`} />
           </div>
+          <div className="ml-3">
+            {theme === 'light' ? <MdLightMode className="text-yellow-500" /> : <MdDarkMode className="text-blue-700" />}
+          </div>
+        </label>
+      )}
 
-          {
-            localStorage.getItem('type')=='admin' || (!localStorage.getItem('email')  && !localStorage.getItem('username')) ? "":(
-              <div className="flex items-center space-x-4">
-                <div className="text-right">
-                  <span className={`${th=='dark'? 'text-white':'bg-white text-black' }`}>{username}</span><br />
-                  <span className={`${th=='dark'? 'text-white':'bg-white text-black' }`}>{email}</span>
-                </div>
-                <Link to='/profile_img'>
-                <img title='profile'
-                  className="w-10 h-10 rounded-full"
-                  src={!data.photo? 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png' :`${data.photo}`}
-                  alt="Profile Photo"
-                />
-                </Link>
-              </div>
-            )
-          }
-          
-        </nav>
-        {/* Push content down by the height of the navbar */}
-        <div className="pt-16">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="profile_img" element={<ProfilePhoto></ProfilePhoto>} />
-            <Route path="profile_img/edit/:id/:type" element={<EditPhoto></EditPhoto>} />
-            <Route path="profile_img/upload/:id/:type" element={<UploadPhoto></UploadPhoto>} />
-            <Route path="profile_img/edit_info/:id/:type" element={<EditInfo></EditInfo>} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-
-
-          <Route path="/admin" element={<Admin></Admin>}>
-        
-          <Route index element={<Announcement></Announcement>}></Route>
-
-
-        {/* <Route path='announcement' element={<Announcement></Announcement>}></Route> */}
-        <Route path='add_videos' element={<Add_Videos></Add_Videos>}></Route>
-        <Route path='statistics' element={<Statistics></Statistics>}></Route>
-        <Route path='add_placements' element={<Add_Placements></Add_Placements>}></Route>
-        <Route path='add_blogs' element={<Add_blogs></Add_blogs>}></Route>
-        <Route path='stud_voice' element={<Student_voice></Student_voice>}></Route>
-
-        <Route path='stud_msgs' element={<StudentMsgs></StudentMsgs>}></Route>
-
-        <Route path='stud_msgs/reply/:username' element={<Reply></Reply>}></Route>
-
-        <Route path='exam_applications' element={<Exams></Exams>}></Route>
-
-
-        <Route path='admission_adm' element={<Admission_adm></Admission_adm>}>
-        <Route path='new_course' element={<New_course></New_course>}></Route>
-        <Route index element={<All_Admissions></All_Admissions>}></Route>        
-        <Route path='add_sub' element={<Add_Subjects></Add_Subjects>}></Route>
-        </Route>
-
-
-            {/* <Route path='*' element={<AdminRoutes></AdminRoutes>}> 
-              <Route path='admission_adm/*' element={<Admissions_Routes></Admissions_Routes>}></Route>
-            </Route>        */}
-
-
-
-          </Route>
-            <Route path="/staff" element={<Staff></Staff>}> 
-              <Route path='/staff/*' element={<StaffRoutes></StaffRoutes>}></Route>
-              <Route index element={<Stud_results></Stud_results>}></Route>
-            </Route>  
-            <Route path="/profile" element={<Profile/>}>
-               <Route index element={<About></About>}></Route>
-              <Route path="/profile/*" element={<ProfileRoutes />} />
-            </Route>
-          </Routes>
+      {/* Profile Section */}
+      {(localStorage.getItem('type') !== 'admin' && username && email) && (
+        <div className="flex items-center space-x-3">
+          <div className="text-sm text-right">
+            <div>{username}</div>
+            <div>{email}</div>
+          </div>
+          <Link to="/profile_img">
+            <img
+              title="profile"
+              className="w-10 h-10 rounded-full"
+              src={data.photo ? `${data.photo}` : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'}
+              alt="Profile"
+            />
+          </Link>
         </div>
-      </BrowserRouter>
+      )}
+    </div>
+  </div>
+
+  {/* Mobile Menu */}
+  {menuOpen && (
+    <div className="md:hidden mt-4 space-y-4 text-center">
+      <Link to="/" className="block hover:underline" onClick={() => setMenuOpen(false)}>Home</Link>
+      {username && email ? (
+        <Link onClick={() => { handleLogout(); setMenuOpen(false); }} to="/login" className="block hover:underline">Log Out</Link>
+      ) : (
+        <>
+          <Link to="/login" className="block hover:underline" onClick={() => setMenuOpen(false)}>Login</Link>
+          <Link to="/register" className="block hover:underline" onClick={() => setMenuOpen(false)}>Register</Link>
+        </>
+      )}
+
+      {username && email && localStorage.getItem('type') === 'student' && (
+        <div className="flex justify-center">
+          <label className="flex items-center cursor-pointer">
+            <div className="relative">
+              <input type="checkbox" className="sr-only" checked={theme === 'dark'} onChange={handleTheme} />
+              <div className={`w-14 h-8 rounded-full shadow-inner transition ${theme === 'dark' ? 'bg-gray-600' : 'bg-gray-300'}`} />
+              <div className={`absolute left-1 top-1 w-6 h-6 rounded-full shadow transform transition-transform duration-300 ease-in-out ${theme === 'dark' ? 'translate-x-full bg-gray-800' : 'bg-white'}`} />
+            </div>
+            <div className="ml-3">
+              {theme === 'light' ? <MdLightMode className="text-yellow-500" /> : <MdDarkMode className="text-blue-700" />}
+            </div>
+          </label>
+        </div>
+      )}
+
+      {(localStorage.getItem('type') !== 'admin' && username && email) && (
+        <div className="flex flex-col items-center">
+          <div>{username}</div>
+          <div>{email}</div>
+          <Link to="/profile_img">
+            <img
+              title="profile"
+              className="w-10 h-10 rounded-full mt-2"
+              src={data.photo ? `${data.photo}` : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_640.png'}
+              alt="Profile"
+            />
+          </Link>
+        </div>
+      )}
+    </div>
+  )}
+</nav>
+
     </>
   );
 }
