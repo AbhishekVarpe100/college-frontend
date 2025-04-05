@@ -8,8 +8,9 @@ import {
 } from '@mui/material';
 import { MdClose, MdPhoneInTalk } from "react-icons/md";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FaBloggerB, FaGraduationCap, FaUniversity } from "react-icons/fa6";
+import { FaBloggerB, FaGraduationCap} from "react-icons/fa6";
 import { CgNotes } from "react-icons/cg";
+import { FaUniversity } from 'react-icons/fa'; 
 import { IoIosInformationCircle } from "react-icons/io";
 import { MdOutlineAnnouncement } from "react-icons/md";
 import { PiStudentFill } from "react-icons/pi";
