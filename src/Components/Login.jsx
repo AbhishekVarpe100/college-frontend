@@ -1,169 +1,269 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { motion } from 'framer-motion';
-import {useNavigate} from 'react-router-dom';
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useSelector, useDispatch } from 'react-redux';
-import { Tooltip, Button } from '@nextui-org/react';
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { motion } from "framer-motion";
+
+// Import individual MUI components instead of the entire package
+// to avoid potential build issues
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Alert from "@mui/material/Alert";
+import FormHelperText from "@mui/material/FormHelperText";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+// Use react-icons instead of MUI icons to avoid dependency issues
+import { FaEye, FaEyeSlash, FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
+
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [type, setType] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State to manage password visibility
-  const navigate=useNavigate();
-  const dispatch=useDispatch();
-  const [success,setSuccess]=useState("");
-  const [invalidUsername,setInvalidUsername]=useState("");
-  const [invalidPassword,setInvalidPassword]=useState("");
-  
+  const [type, setType] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [alert, setAlert] = useState({ show: false, message: "", severity: "info" });
+  const [formErrors, setFormErrors] = useState({ username: false, password: false });
+
+  // Create a custom theme for classic Material UI look
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: "#1976d2",
+      },
+      secondary: {
+        main: "#f50057",
+      },
+    },
+    typography: {
+      fontFamily: ["Roboto", "Arial", "sans-serif"].join(","),
+    },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: "none",
+            borderRadius: 4,
+          },
+        },
+      },
+      MuiPaper: {
+        styleOverrides: {
+          root: {
+            borderRadius: 8,
+          },
+        },
+      },
+    },
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Reset form errors
+    setFormErrors({ username: false, password: false });
+    
     try {
-      const response = await axios.post('https://college-backend-4-cgya.onrender.com/login', { type, username, password });
-      localStorage.setItem('token', `bearer ${response.data.token}`);
-      localStorage.setItem('username', `${response.data.userName}`);
-      localStorage.setItem('email', `${response.data.email}`);
-      localStorage.setItem('type', `${response.data.type}`);
-      // alert(response.data.message ? response.data.message : response.data);
-      // response.data.message=='login_success'?navigate('/profile') :<></>;
-      // window.reload();
-      if(response.data.message=='login_success_user'){
-        setSuccess(<b className="text-blue-600">Login successfully</b>)
-        setTimeout(()=>{
-          navigate('/profile')
-      dispatch({type:'USERNAME',payload:response.data.userName}) 
-     dispatch({type:'EMAIL',payload:response.data.email}) 
-      setSuccess('')
-        },3000)
-      }
+      const response = await axios.post("https://college-backend-4-cgya.onrender.com/login", {
+        type,
+        username,
+        password,
+      });
       
-      else if(response.data.message=='login_success_staff'){
-        setSuccess(<b className="text-blue-600">Login successfully</b>)
-        setTimeout(()=>{
-          navigate('/staff')
-      dispatch({type:'USERNAME',payload:response.data.userName}) 
-      dispatch({type:'EMAIL',payload:response.data.email})
-      setSuccess("")
-        },3000)
-      // alert("Hello")
+      localStorage.setItem("token", `bearer ${response.data.token}`);
+      localStorage.setItem("username", `${response.data.userName}`);
+      localStorage.setItem("email", `${response.data.email}`);
+      localStorage.setItem("type", `${response.data.type}`);
+
+      if (response.data.message === "login_success_user") {
+        setAlert({ show: true, message: "Login successful! Redirecting...", severity: "success" });
+        setTimeout(() => {
+          navigate("/profile");
+          dispatch({ type: "USERNAME", payload: response.data.userName });
+          dispatch({ type: "EMAIL", payload: response.data.email });
+        }, 2000);
+      } else if (response.data.message === "login_success_staff") {
+        setAlert({ show: true, message: "Login successful! Redirecting...", severity: "success" });
+        setTimeout(() => {
+          navigate("/staff");
+          dispatch({ type: "USERNAME", payload: response.data.userName });
+          dispatch({ type: "EMAIL", payload: response.data.email });
+        }, 2000);
+      } else if (response.data.message === "login_success_admin") {
+        setAlert({ show: true, message: "Login successful! Redirecting...", severity: "success" });
+        setTimeout(() => {
+          navigate("/admin");
+          dispatch({ type: "USERNAME", payload: response.data.userName });
+          dispatch({ type: "EMAIL", payload: response.data.email });
+        }, 2000);
+      } else if (response.data === "user not found") {
+        setFormErrors({ ...formErrors, username: true });
+        setAlert({ show: true, message: "User not found", severity: "error" });
+      } else if (response.data === "incorrect password") {
+        setFormErrors({ ...formErrors, password: true });
+        setAlert({ show: true, message: "Incorrect password", severity: "error" });
       }
-
-      else if(response.data.message=='login_success_admin'){
-        setSuccess(<b className="text-blue-600">Login successfully</b>)
-        setTimeout(()=>{
-          navigate('/admin')
-      dispatch({type:'USERNAME',payload:response.data.userName}) 
-      dispatch({type:'EMAIL',payload:response.data.email})
-      setSuccess("")
-        },3000)
-      }
-
-      else if(response.data=='user not found'){
-        setInvalidUsername(<b className="text-red-600">User not found</b>);
-      }
-
-      
-
-      else if(response.data=='incorrect password'){
-        setInvalidPassword(<b className="text-red-600">Incorrect password</b>);
-      }
-
-      setTimeout(()=>{
-        setInvalidUsername('');
-        setInvalidPassword('');
-      },5000)
-      
 
     } catch (e) {
       console.log(e);
+      setAlert({ show: true, message: "An error occurred. Please try again.", severity: "error" });
     }
   };
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
+    setShowPassword((prev) => !prev);
   };
 
-
-  useEffect(()=>{
-    if(localStorage.getItem('username') && localStorage.getItem('email') && localStorage.getItem('type')=='student'){
-      navigate('/profile');
+  useEffect(() => {
+    if (localStorage.getItem("username") && localStorage.getItem("email")) {
+      const userType = localStorage.getItem("type");
+      if (userType === "student") {
+        navigate("/profile");
+      } else if (userType === "staff") {
+        navigate("/staff");
+      } else if (userType === "admin") {
+        navigate("/admin");
+      }
     }
-    else if(localStorage.getItem('username') && localStorage.getItem('email') && localStorage.getItem('type')=='staff'){
-      navigate('/staff')
-    }
-  },[])
+  }, [navigate]);
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100" style={{ backgroundImage: 'linear-gradient(to bottom, cyan, white)' }}>
-      <motion.div
-        initial={{ x: +500 }}
-        animate={{ x: 0 }}
-        transition={{ duration: 0.5 }}
-        className="w-full max-w-md p-4 sm:p-6 lg:p-8"
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "linear-gradient(135deg, #2196f3 0%, #64b5f6 100%)",
+          padding: 2,
+        }}
       >
-        
-        <div className="bg-white shadow-xl rounded-lg p-8">
-          <h2 className="text-3xl text-center font-bold mb-6">Login</h2>
-          {success}
-          {invalidUsername}
-          {invalidPassword}
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label htmlFor="select" className="block text-gray-700 text-sm font-bold mb-2">Select login type</label>
-              <select required onChange={(e) => setType(e.target.value)}
-                id="select"
-                className="block w-full px-3 py-2 mt-1 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              >
-                <option value="">---Select---</option>
-                <option value="student">Student</option>
-                <option value="staff">Staff</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="username" className="block text-gray-700 text-sm font-bold mb-2">Username</label>
-              <input required
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="focus:border-indigo-500 shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">Password</label>
-              <div className="relative">
-                <input required
-                  id="password"
+        <Container maxWidth="sm">
+          <motion.div
+            initial={{ y: 50, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Paper elevation={8} sx={{ p: 4 }}>
+              <Typography variant="h4" component="h1" align="center" gutterBottom fontWeight="500">
+                Login
+              </Typography>
+
+              {alert.show && (
+                <Alert severity={alert.severity} sx={{ mb: 2 }}>
+                  {alert.message}
+                </Alert>
+              )}
+
+              <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                <FormControl fullWidth margin="normal" required>
+                  <InputLabel id="login-type-label">Login Type</InputLabel>
+                  <Select
+                    labelId="login-type-label"
+                    id="login-type"
+                    value={type}
+                    label="Login Type"
+                    onChange={(e) => setType(e.target.value)}
+                  >
+                    <MenuItem value="">Select</MenuItem>
+                    <MenuItem value="student">Student</MenuItem>
+                    <MenuItem value="staff">Staff</MenuItem>
+                    <MenuItem value="admin">Admin</MenuItem>
+                  </Select>
+                  {!type && (
+                    <FormHelperText error>Please select your login type</FormHelperText>
+                  )}
+                </FormControl>
+
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  name="username"
+                  autoComplete="username"
+                  autoFocus
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  error={formErrors.username}
+                  helperText={formErrors.username ? "Invalid username" : ""}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <FaUser />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
                   type={showPassword ? "text" : "password"}
+                  id="password"
+                  autoComplete="current-password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="focus:border-indigo-500 shadow appearance-none border border-gray-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                  error={formErrors.password}
+                  helperText={formErrors.password ? "Invalid password" : ""}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <FaLock />
+                      </InputAdornment>
+                    ),
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={togglePasswordVisibility}
+                          edge="end"
+                        >
+                          {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
                 />
-                <div
-                  onClick={togglePasswordVisibility}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
-                >
-                  {showPassword ? <FaEyeSlash className="text-2xl" /> : <FaEye className="text-2xl" />}
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center justify-between">
 
-              <Tooltip color='primary' content="Sign in">
-              <button
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-              >
-                Sign In
-              </button>
-              </Tooltip>
-            </div>
-          </form>
-        </div>
-      </motion.div>
-    </div>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  size="large"
+                  sx={{ 
+                    mt: 3, 
+                    mb: 2, 
+                    py: 1.5,
+                    position: 'relative'
+                  }}
+                >
+                  <Box sx={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }}>
+                    <FaSignInAlt />
+                  </Box>
+                  Sign In
+                </Button>
+              </Box>
+            </Paper>
+          </motion.div>
+        </Container>
+      </Box>
+    </ThemeProvider>
   );
 }
 
