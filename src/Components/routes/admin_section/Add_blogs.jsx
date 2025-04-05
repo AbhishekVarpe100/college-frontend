@@ -39,7 +39,7 @@ function Add_blogs() {
     formData.append('title',data.title);
     formData.append('description',data.description);
     formData.append('file',file);
-    const res=await axios.post('https://college-backend-4-cgya.onrender.com/3000/add_blog',formData);
+    const res=await axios.post('https://college-backend-4-cgya.onrender.com/add_blog',formData);
     setChange(prev=>!prev)
     
   }
