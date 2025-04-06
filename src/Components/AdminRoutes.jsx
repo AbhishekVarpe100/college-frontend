@@ -11,6 +11,7 @@ import Admission_adm from './routes/admin_section/Admissions_adm';
 import Exams from './routes/admin_section/Exams';
 import StudentMsgs from './routes/admin_section/StudentMsgs';
 import Reply from './routes/admin_section/Reply';
+import Users from './routes/admin_section/Users';
 
 function AdminRoutes(){
   return (
@@ -27,6 +28,7 @@ function AdminRoutes(){
         <Route path='exam_applications' element={<Exams></Exams>}></Route>
         <Route path='stud_msgs' element={<StudentMsgs></StudentMsgs>}>
         <Route path='reply/:username' element={<Reply></Reply>}></Route>
+        <Route path='users' element={<Users></Users>}></Route>
         </Route>
     </Routes>
     

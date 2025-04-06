@@ -38,6 +38,7 @@ import Exams from './Components/routes/admin_section/Exams';
 import Stud_results from './Components/routes/staff_section/Stud_results';
 import StudentMsgs from './Components/routes/admin_section/StudentMsgs';
 import Reply from './Components/routes/admin_section/Reply';
+import Users from './Components/routes/admin_section/Users';
 
 
 function App() {
@@ -231,6 +232,7 @@ useEffect(() => {
         
           <Route index element={<Announcement></Announcement>}></Route>
 
+        <Route path='users' element={<Users></Users>}></Route>
 
         {/* <Route path='announcement' element={<Announcement></Announcement>}></Route> */}
         <Route path='add_videos' element={<Add_Videos></Add_Videos>}></Route>

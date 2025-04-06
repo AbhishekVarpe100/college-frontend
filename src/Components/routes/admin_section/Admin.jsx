@@ -61,6 +61,7 @@ function Admin() {
               <div className="p-4">
                 <h2 className="text-2xl font-bold mb-6">Content</h2>
                 <ul>
+                  
                   <li className="mb-2">
                     <Link
                       to="/admin/"
@@ -68,6 +69,15 @@ function Admin() {
                       onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
                     >
                       Create notice/announcements
+                    </Link>
+                  </li>
+                  <li className="mb-2">
+                    <Link
+                      to="/admin/users"
+                      className="block p-2 bg-gray-700 hover:bg-gray-600 rounded"
+                      onClick={() => setIsSidebarOpen(false)} // Close sidebar on link click
+                    >
+                      User Details
                     </Link>
                   </li>
                   <li className="mb-2">
