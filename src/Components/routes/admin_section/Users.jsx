@@ -20,53 +20,52 @@ function Users() {
   }, []);
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-semibold text-center text-blue-800 mb-6">
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <h1 className="text-4xl font-bold text-center text-indigo-800 mb-4">
         🌍 User Location & Device Details
       </h1>
+      <p className="text-center text-gray-600 mb-10">
+        Total Users: <span className="font-semibold">{data.length}</span>
+      </p>
 
       <div className="grid gap-6 lg:grid-cols-2 xl:grid-cols-3">
         {data.map((user, idx) => (
           <div
             key={idx}
-            className="bg-white border border-gray-200 rounded-2xl shadow-md p-4 transition hover:shadow-lg"
+            className="bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md p-6"
           >
-            <div className="flex items-center gap-3 mb-4">
-              <img src={user.country_flag} alt="flag" className="w-6 h-4 border rounded" />
-              <h2 className="text-lg font-semibold text-blue-700">
-                {user.city}, {user.country}
-              </h2>
+            <div className="flex items-center mb-4">
+              <img src={user.country_flag} alt="flag" className="w-6 h-4 rounded mr-3 border" />
+              <div>
+                <h2 className="text-xl font-semibold text-gray-800">{user.city}, {user.region}</h2>
+                <p className="text-sm text-gray-500">{user.country}</p>
+              </div>
             </div>
 
             <div className="text-sm text-gray-700 space-y-1">
-              <p><span className="font-medium">IP:</span> {user.ip}</p>
-              <p><span className="font-medium">Continent:</span> {user.continent} ({user.continent_code})</p>
-              <p><span className="font-medium">Country :</span> {user.country}</p>
-              <p><span className="font-medium">Country Code:</span> {user.country_code}</p>
-              <p><span className="font-medium">Country Flag:</span> <a className='text-blue-600 font-bold' href={user.country_flag}>Country Flag</a></p>
-              <p><span className="font-medium">Capital:</span> {user.country_capital}</p>
-              <p><span className="font-medium">Phone Code:</span> {user.country_phone}</p>
-              <p><span className="font-medium">Neighbours:</span> {user.country_neighbours}</p>
-              <p><span className="font-medium">Region:</span> {user.region}</p>
-              <p><span className="font-medium">Latitude:</span> {user.latitude}</p>
-              <p><span className="font-medium">Longitude:</span> {user.longitude}</p>
-              <p><span className="font-medium">ASN:</span> {user.asn}</p>
-              <p><span className="font-medium">Organization:</span> {user.org}</p>
-              <p><span className="font-medium">ISP:</span> {user.isp}</p>
-              <p><span className="font-medium">Timezone:</span> {user.timezone}</p>
-              <p><span className="font-medium">Timezone Name:</span> {user.timezone_name}</p>
-              <p><span className="font-medium">DST Offset:</span> {user.timezone_dstOffset}</p>
-              <p><span className="font-medium">GMT:</span> {user.timezone_gmt}</p>
-              <p><span className="font-medium">GMT Offset:</span> {user.timezone_gmtOffset}</p>
-              <p><span className="font-medium">Currency:</span> {user.currency}</p>
-              <p><span className="font-medium">Currency Code:</span> {user.currency_code}</p>
-              <p><span className="font-medium">Currency Symbol:</span> {user.currency_symbol}</p>
-              <p><span className="font-medium">Currency Plural:</span> {user.currency_plural}</p>
-              <p><span className="font-medium">Currency Rate:</span> {user.currency_rates}</p>
-              <p><span className="font-medium">Browser:</span> {user.browser}</p>
-              <p><span className="font-medium">OS:</span> {user.os}</p>
-              <p><span className="font-medium">Device:</span> {user.device}</p>
-              <p><span className="font-medium">Timestamp:</span> {new Date(user.timestamp).toLocaleString()}</p>
+              <p><strong>IP:</strong> {user.ip}</p>
+              <p><strong>Continent:</strong> {user.continent} ({user.continent_code})</p>
+              <p><strong>Country:</strong> {user.country}</p>
+              <p><strong>Country Code:</strong> {user.country_code}</p>
+              <p><strong>Capital:</strong> {user.country_capital}</p>
+              <p><strong>Phone Code:</strong> {user.country_phone}</p>
+              <p><strong>Neighbours:</strong> {user.country_neighbours}</p>
+              <p><strong>Latitude:</strong> {user.latitude}</p>
+              <p><strong>Longitude:</strong> {user.longitude}</p>
+              <p><strong>ASN:</strong> {user.asn}</p>
+              <p><strong>Organization:</strong> {user.org}</p>
+              <p><strong>ISP:</strong> {user.isp}</p>
+              <p><strong>Timezone:</strong> {user.timezone} ({user.timezone_name})</p>
+              <p><strong>DST Offset:</strong> {user.timezone_dstOffset}</p>
+              <p><strong>GMT:</strong> {user.timezone_gmt} ({user.timezone_gmtOffset})</p>
+              <p><strong>Currency:</strong> {user.currency} ({user.currency_symbol}, {user.currency_code})</p>
+              <p><strong>Currency Rate:</strong> {user.currency_rates}</p>
+              <p><strong>Currency Plural:</strong> {user.currency_plural}</p>
+              <p><strong>Browser:</strong> {user.browser}</p>
+              <p><strong>OS:</strong> {user.os}</p>
+              <p><strong>Device:</strong> {user.device}</p>
+              <p><strong>Timestamp:</strong> {new Date(user.timestamp).toLocaleString()}</p>
+              <p><strong>Country Flag:</strong> <a href={user.country_flag} className="text-indigo-600 font-medium" target="_blank" rel="noopener noreferrer">View</a></p>
             </div>
           </div>
         ))}
