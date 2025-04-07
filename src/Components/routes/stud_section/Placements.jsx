@@ -93,11 +93,7 @@ function Placements() {
                     </div>
                   </div>
                   
-                  <div className="px-6 pb-4 pt-0">
-                    <div className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                      Class of {new Date().getFullYear()}
-                    </div>
-                  </div>
+                  
                 </div>
               ))
             ) : (
