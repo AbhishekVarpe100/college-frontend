@@ -22,13 +22,14 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 // Use react-icons instead of MUI icons to avoid dependency issues
-import { FaEye, FaEyeSlash, FaUser, FaLock, FaSignInAlt } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaUser, FaLock, FaSignInAlt, FaSpinner } from "react-icons/fa";
 
 function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [type, setType] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false); // New loading state
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [alert, setAlert] = useState({ show: false, message: "", severity: "info" });
@@ -68,6 +69,7 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Set loading to true when form is submitted
 
     // Reset form errors
     setFormErrors({ username: false, password: false });
@@ -90,6 +92,7 @@ function Login() {
           navigate("/profile");
           dispatch({ type: "USERNAME", payload: response.data.userName });
           dispatch({ type: "EMAIL", payload: response.data.email });
+          setLoading(false); // Set loading to false after navigation
         }, 2000);
       } else if (response.data.message === "login_success_staff") {
         setAlert({ show: true, message: "Login successful! Redirecting...", severity: "success" });
@@ -97,6 +100,7 @@ function Login() {
           navigate("/staff");
           dispatch({ type: "USERNAME", payload: response.data.userName });
           dispatch({ type: "EMAIL", payload: response.data.email });
+          setLoading(false);
         }, 2000);
       } else if (response.data.message === "login_success_admin") {
         setAlert({ show: true, message: "Login successful! Redirecting...", severity: "success" });
@@ -104,18 +108,22 @@ function Login() {
           navigate("/admin");
           dispatch({ type: "USERNAME", payload: response.data.userName });
           dispatch({ type: "EMAIL", payload: response.data.email });
+          setLoading(false);
         }, 2000);
       } else if (response.data === "user not found") {
         setFormErrors({ ...formErrors, username: true });
         setAlert({ show: true, message: "User not found", severity: "error" });
+        setLoading(false);
       } else if (response.data === "incorrect password") {
         setFormErrors({ ...formErrors, password: true });
         setAlert({ show: true, message: "Incorrect password", severity: "error" });
+        setLoading(false);
       }
 
     } catch (e) {
       console.log(e);
       setAlert({ show: true, message: "An error occurred. Please try again.", severity: "error" });
+      setLoading(false);
     }
   };
 
@@ -240,6 +248,7 @@ function Login() {
                 fullWidth
                 variant="contained"
                 size="large"
+                disabled={loading} // Disable button when loading
                 sx={{
                   mt: 3,
                   mb: 2,
@@ -247,18 +256,23 @@ function Login() {
                   position: 'relative'
                 }}
               >
-                <Box sx={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }}>
-                  <FaSignInAlt />
-                </Box>
-                Sign In
+                {loading ? (
+                  <FaSpinner className="spinner" style={{ animation: "spin 1s linear infinite" }} />
+                ) : (
+                  <>
+                    <Box sx={{ position: 'absolute', left: 16, top: '50%', transform: 'translateY(-50%)' }}>
+                      <FaSignInAlt />
+                    </Box>
+                    Sign In
+                  </>
+                )}
               </Button>
             </Box>
           </Paper>
         </Container>
-      </Box>
+      </Box> 
     </ThemeProvider>
   );
 }
 
 export default Login;
-
