@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { FaBookOpen, FaSpinner, FaCalendarAlt, FaUser } from 'react-icons/fa';
+import { FaBookOpen, FaSpinner, FaUser } from 'react-icons/fa';
 
 function Blogs() {
   const [mainData, setMainData] = useState([]);
@@ -21,12 +21,6 @@ function Blogs() {
   useEffect(() => {
     getData();
   }, []);
-
-  // Function to truncate text with ellipsis
-  const truncateText = (text, maxLength) => {
-    if (text.length <= maxLength) return text;
-    return text.substr(0, maxLength) + '...';
-  };
 
   return (
     <div className="bg-gray-100 min-h-screen py-8">
@@ -76,8 +70,6 @@ function Blogs() {
                   
                   <div className="p-4">
                     <div className="flex items-center text-gray-500 text-sm mb-2">
-                      <FaCalendarAlt className="mr-1" />
-                      <span className="mr-3">{new Date().toLocaleDateString()}</span>
                       <FaUser className="mr-1" />
                       <span>Campus Writer</span>
                     </div>
@@ -86,14 +78,8 @@ function Blogs() {
                       {item.title}
                     </h2>
                     
-                    <p className="text-gray-600 mt-2 mb-4">
-                      {truncateText(item.description, 120)}
-                    </p>
-                    
-                    <div className="text-right">
-                      <button className="inline-block px-4 py-2 bg-gray-800 text-white rounded hover:bg-red-700 transition-colors font-medium text-sm">
-                        Read More
-                      </button>
+                    <div className="text-gray-600 mt-2 blog-content">
+                      {item.description}
                     </div>
                   </div>
                 </div>
