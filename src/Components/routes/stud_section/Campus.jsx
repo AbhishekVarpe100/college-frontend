@@ -1,13 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import { FaPlay, FaPause, FaVideo } from 'react-icons/fa';
+import { FaPlay, FaPause, FaVideo, FaDownload, FaExpand } from 'react-icons/fa';
 import { BiLoaderCircle } from 'react-icons/bi';
+import { MdSpeed } from 'react-icons/md';
 
 function Campus() {
   const [videos, setVideos] = useState([]);
   const videoRefs = useRef([]);
   const [loading, setLoading] = useState(true);
   const [playingIndex, setPlayingIndex] = useState(null);
+  const [playbackSpeeds, setPlaybackSpeeds] = useState({});
+  const [showSpeedOptions, setShowSpeedOptions] = useState({});
+
+  const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
 
   const handlePlay = (index) => {
     videoRefs.current.forEach((video, idx) => {
@@ -22,10 +27,51 @@ function Campus() {
     setPlayingIndex(null);
   };
 
+  const toggleSpeedOptions = (index) => {
+    setShowSpeedOptions(prev => ({
+      ...prev,
+      [index]: !prev[index]
+    }));
+  };
+
+  const setSpeed = (index, speed) => {
+    if (videoRefs.current[index]) {
+      videoRefs.current[index].playbackRate = speed;
+      setPlaybackSpeeds(prev => ({
+        ...prev,
+        [index]: speed
+      }));
+      setShowSpeedOptions(prev => ({
+        ...prev,
+        [index]: false
+      }));
+    }
+  };
+
+  const handleFullScreen = (index) => {
+    if (videoRefs.current[index]) {
+      if (videoRefs.current[index].requestFullscreen) {
+        videoRefs.current[index].requestFullscreen();
+      } else if (videoRefs.current[index].webkitRequestFullscreen) {
+        videoRefs.current[index].webkitRequestFullscreen();
+      } else if (videoRefs.current[index].msRequestFullscreen) {
+        videoRefs.current[index].msRequestFullscreen();
+      }
+    }
+  };
+
   const getData = async () => {
     try {
       const res = await axios.post('https://college-backend-4-cgya.onrender.com/get_videos');
       setVideos(res.data);
+      
+      // Initialize playback speeds to 1x for all videos
+      const initialSpeeds = {};
+      res.data.forEach((_, index) => {
+        initialSpeeds[index] = 1;
+      });
+      setPlaybackSpeeds(initialSpeeds);
+      
       setTimeout(() => {
         setLoading(false);
       }, 1500);
@@ -61,7 +107,6 @@ function Campus() {
                   </div>
                   <div className="p-6">
                     <div className="h-4 bg-gray-300 rounded w-3/4 mb-4"></div>
-                    <div className="h-3 bg-gray-300 rounded w-1/2"></div>
                   </div>
                 </div>
               </div>
@@ -80,6 +125,7 @@ function Campus() {
                     className="w-full h-64 object-cover"
                     onPlay={() => handlePlay(index)}
                     onPause={handlePause}
+                    controls={false}
                   >
                     <source src={video.video} type="video/mp4" />
                     Your browser does not support the video tag.
@@ -96,40 +142,85 @@ function Campus() {
                   
                   {/* Video controls */}
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <div className="flex items-center">
-                      <button 
-                        onClick={() => {
-                          const video = videoRefs.current[index];
-                          if (video.paused) {
-                            video.play();
-                          } else {
-                            video.pause();
-                          }
-                        }}
-                        className="bg-white bg-opacity-90 rounded-full p-2 mr-2 shadow hover:bg-opacity-100 focus:outline-none transition"
-                      >
-                        {playingIndex === index ? (
-                          <FaPause className="text-gray-800 w-4 h-4" />
-                        ) : (
-                          <FaPlay className="text-gray-800 w-4 h-4" />
-                        )}
-                      </button>
-                      <div className="bg-white bg-opacity-90 px-3 py-1 rounded-full text-sm text-gray-800 font-medium">
-                        {video.duration || "00:00"}
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center">
+                        <button 
+                          onClick={() => {
+                            const video = videoRefs.current[index];
+                            if (video.paused) {
+                              video.play();
+                            } else {
+                              video.pause();
+                            }
+                          }}
+                          className="bg-white bg-opacity-90 rounded-full p-2 mr-2 shadow hover:bg-opacity-100 focus:outline-none transition"
+                        >
+                          {playingIndex === index ? (
+                            <FaPause className="text-gray-800 w-4 h-4" />
+                          ) : (
+                            <FaPlay className="text-gray-800 w-4 h-4" />
+                          )}
+                        </button>
+                        <div className="bg-white bg-opacity-90 px-3 py-1 rounded-full text-sm text-gray-800 font-medium">
+                          {video.duration || "00:00"}
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-center space-x-2">
+                        {/* Speed control */}
+                        <div className="relative">
+                          <button 
+                            onClick={() => toggleSpeedOptions(index)}
+                            className="bg-white bg-opacity-90 rounded-full p-2 shadow hover:bg-opacity-100 focus:outline-none transition flex items-center"
+                          >
+                            <MdSpeed className="text-gray-800 w-4 h-4" />
+                            <span className="ml-1 text-xs">{playbackSpeeds[index]}x</span>
+                          </button>
+                          
+                          {showSpeedOptions[index] && (
+                            <div className="absolute bottom-full mb-2 right-0 bg-white rounded-lg shadow-lg p-2 z-10">
+                              {speeds.map(speed => (
+                                <button
+                                  key={speed}
+                                  onClick={() => setSpeed(index, speed)}
+                                  className={`block w-full text-left px-3 py-1 text-sm rounded ${
+                                    playbackSpeeds[index] === speed 
+                                      ? 'bg-indigo-100 text-indigo-800 font-medium' 
+                                      : 'hover:bg-gray-100'
+                                  }`}
+                                >
+                                  {speed}x
+                                </button>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        
+                        {/* Download button */}
+                        <a 
+                          href={video.video} 
+                          download={`${video.title || 'campus-video'}.mp4`}
+                          className="bg-white bg-opacity-90 rounded-full p-2 shadow hover:bg-opacity-100 focus:outline-none transition"
+                        >
+                          <FaDownload className="text-gray-800 w-4 h-4" />
+                        </a>
+                        
+                        {/* Fullscreen button */}
+                        <button 
+                          onClick={() => handleFullScreen(index)}
+                          className="bg-white bg-opacity-90 rounded-full p-2 shadow hover:bg-opacity-100 focus:outline-none transition"
+                        >
+                          <FaExpand className="text-gray-800 w-4 h-4" />
+                        </button>
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                <div className="p-6">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-2">{video.title}</h3>
-                      <p className="text-gray-600 text-sm line-clamp-2">
-                        {video.description || "No description available"}
-                      </p>
-                    </div>
-                    <FaVideo className="text-indigo-500 w-5 h-5 mt-1" />
+                <div className="p-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-gray-900">{video.title}</h3>
+                    <FaVideo className="text-indigo-500 w-5 h-5" />
                   </div>
                 </div>
               </div>
