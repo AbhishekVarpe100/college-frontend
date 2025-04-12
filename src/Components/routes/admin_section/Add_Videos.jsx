@@ -52,7 +52,6 @@ function Add_Videos() {
   }
 
   return (
-
     <>
     <div className="flex bg-white items-center justify-center min-h-screen">
       <div className="p-8 rounded-lg shadow-lg w-full max-w-md">
